@@ -1,0 +1,52 @@
+======================================================================
+  DESEMPLEO Y DELINCUENCIA EN COLOMBIA – INSTRUCCIONES RÁPIDAS
+======================================================================
+
+PROBLEMAS QUE SE CORRIGIERON
+----------------------------
+1. Excel de Policía: el encabezado está en la FILA 11, no en la 0.
+   Las columnas salían como "Unnamed" porque se leía mal.
+2. DANE devolvía HTTP 401: faltaba User-Agent de navegador.
+3. Streamlit Cloud: faltaba requirements.txt en la RAÍZ del repo.
+4. Estructura de anexos DANE: bloques por departamento + fila
+   "Tasa de Desocupación (TD)".
+
+ARCHIVOS A SUBIR A GITHUB (raíz del repositorio)
+------------------------------------------------
+  app.py
+  data_pipeline.py
+  requirements.txt
+  README.md          (opcional)
+
+STREAMLIT COMMUNITY CLOUD
+-------------------------
+1. Sube los archivos a un repo de GitHub (todos en la raíz).
+2. En share.streamlit.io crea la app apuntando a app.py.
+3. Si dice "Faltan dependencias":
+     - Confirma que requirements.txt está en la raíz.
+     - Manage app → Reboot.
+   NO instales paquetes con pip dentro de app.py.
+
+USO LOCAL
+---------
+  pip install -r requirements.txt
+  streamlit run app.py
+
+COLAB / SCRIPT
+--------------
+  from data_pipeline import run_pipeline
+  res = run_pipeline(max_anios_delitos=2, anios_dane=[2022,2023,2024])
+  print(res["panel"].head())
+
+NOTAS
+-----
+- Por defecto se procesan solo 2 años de delitos (archivos de 30-40 MB).
+- Los años 2022 y 2023 de Policía vienen en ZIP; se omiten por defecto.
+- No se inventan datos: si falla la extracción, se reporta y se continúa.
+- El modelo es exploratorio (asociación, no causalidad).
+
+FUENTES
+-------
+Policía: https://www.policia.gov.co/contenido/informacion-delitos-nivel-registro-ano-2020-2026
+DANE:    https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/mercado-laboral-por-departamentos/mercado-laboral-por-departamento-historicos
+======================================================================
